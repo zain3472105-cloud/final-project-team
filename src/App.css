@@ -1,54 +1,77 @@
 
-/* =========================
-   APP LAYOUT
-========================= */
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
-.app {
-  display: flex;
+html {
   width: 100%;
+  min-height: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  width: 100%;
+  min-width: 320px;
   min-height: 100vh;
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
   background: #f5f6fa;
 }
 
-/* =========================
-   MAIN CONTENT
-========================= */
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+
+
+.app {
+  display: flex;
+  align-items: stretch;
+
+  width: 100%;
+  min-height: 100vh;
+
+  margin: 0;
+  padding: 0;
+
+  background: #f5f6fa;
+}
+
+
 
 .app-content {
-  flex: 1;
+  flex: 1 1 0%;
   width: 0;
   min-width: 0;
   min-height: 100vh;
+
   margin: 0;
   padding: 0;
+
   box-sizing: border-box;
-  transition: width 0.3s ease;
+
+  transition:
+    width 0.3s ease,
+    flex-basis 0.3s ease;
 }
 
-/* Sidebar open */
 
 .app-content.sidebar-is-open {
-  flex: 1;
+  flex: 1 1 0%;
   min-width: 0;
 }
 
-/* Sidebar closed */
 
 .app-content.sidebar-is-closed {
-  flex: 1;
-  min-width: 0;
+  flex: 1 1 0%;
   width: 100%;
+  min-width: 0;
 }
-
-/* =========================
-   GLOBAL MENU BUTTON
-========================= */
 
 .global-menu-toggle {
   display: flex;
@@ -72,6 +95,7 @@
 
   position: relative;
   z-index: 1100;
+
   flex-shrink: 0;
 
   transition:
@@ -92,9 +116,27 @@
   outline-offset: 3px;
 }
 
-/* =========================
-   MOBILE LAYOUT
-========================= */
+.app-content > * {
+  max-width: 100%;
+  min-width: 0;
+}
+
+.app-content img {
+  max-width: 100%;
+}
+
+.app-content h1,
+.app-content h2,
+.app-content h3,
+.app-content p {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 1024px) {
+  .app-content {
+    min-width: 0;
+  }
+}
 
 @media (max-width: 768px) {
   .app {
@@ -107,29 +149,41 @@
   .app-content.sidebar-is-open,
   .app-content.sidebar-is-closed {
     display: block;
+
     width: 100%;
     min-width: 0;
     min-height: 100vh;
+
     margin: 0;
   }
 
   .global-menu-toggle {
     position: fixed;
+
     top: 10px;
     left: 10px;
+
     margin: 0;
+
     z-index: 1200;
   }
 }
-
-/* =========================
-   SMALL MOBILE SCREENS
-========================= */
 
 @media (max-width: 400px) {
   .global-menu-toggle {
     width: 40px;
     height: 40px;
+
     font-size: 22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto;
+    transition-duration: 0.01ms;
+    animation-duration: 0.01ms;
   }
 }

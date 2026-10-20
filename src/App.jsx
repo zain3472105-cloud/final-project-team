@@ -1,6 +1,8 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
 import "./App.css";
+
 import Sidebar from "./Sidebar";
 import Dashboard from "./Dashboard";
 import Account from "./Account";
@@ -19,37 +21,100 @@ function App() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [currentPage, setCurrentPage] = useState("dashboard");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 768) {
+        setSidebarOpen(false);
+      } else {
+        setSidebarOpen(true);
+      }
+    };
 
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
   const toggleSidebar = () => {
     setSidebarOpen((prev) => !prev);
   };
   if (!isLoggedIn) {
-  return <Auth onLogin={() => setIsLoggedIn(true)} />;
-}
+    return <Auth onLogin={() => setIsLoggedIn(true)} />;
+  }
+  const renderPage = () => {
+    switch (currentPage) {
+      case "dashboard":
+        return (
+          <Dashboard
+            toggleSidebar={toggleSidebar}
+            sidebarOpen={sidebarOpen}
+            setCurrentPage={setCurrentPage}
+          />
+        );
 
+      case "account":
+        return (
+          <Account
+            toggleSidebar={toggleSidebar}
+            sidebarOpen={sidebarOpen}
+            setCurrentPage={setCurrentPage}
+          />
+        );
+
+      case "books":
+        return <BookCollection setCurrentPage={setCurrentPage} />;
+
+      case "borrowed":
+        return <BorrowedBooks setCurrentPage={setCurrentPage} />;
+
+      case "findBook":
+        return <FindBook setCurrentPage={setCurrentPage} />;
+
+      case "due":
+        return <DueBook setCurrentPage={setCurrentPage} />;
+
+      case "findLibrary":
+        return <FindLibrary setCurrentPage={setCurrentPage} />;
+
+      case "categories":
+        return <Categories setCurrentPage={setCurrentPage} />;
+
+      case "members":
+        return <Members setCurrentPage={setCurrentPage} />;
+
+      case "favorite":
+        return <FavoriteBook setCurrentPage={setCurrentPage} />;
+
+      case "settings":
+        return <Setting setCurrentPage={setCurrentPage} />;
+
+      default:
+        return (
+          <Dashboard
+            toggleSidebar={toggleSidebar}
+            sidebarOpen={sidebarOpen}
+            setCurrentPage={setCurrentPage}
+          />
+        );
+    }
+  };
 
   return (
     <div className="app">
-
-      {/* Sidebar */}
-<Sidebar
-  sidebarOpen={sidebarOpen}
-  setSidebarOpen={setSidebarOpen}
-  currentPage={currentPage}
-  setCurrentPage={setCurrentPage}
-/>
-
-
-      {/* Main Content */}
+      <Sidebar
+        sidebarOpen={sidebarOpen}
+        setSidebarOpen={setSidebarOpen}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
       <main
-        className={
-          sidebarOpen
-            ? "app-content sidebar-is-open"
-            : "app-content sidebar-is-closed"
-        }
+        className={`app-content ${
+          sidebarOpen ? "sidebar-is-open" : "sidebar-is-closed"
+        }`}
       >
-
-        {/* Menu Button — available on every page */}
         <button
           type="button"
           className="global-menu-toggle"
@@ -57,62 +122,11 @@ function App() {
           aria-label={sidebarOpen ? "Close sidebar" : "Open sidebar"}
           aria-expanded={sidebarOpen}
         >
-          {sidebarOpen ? "☰" : "☰"}
+          ☰
         </button>
-
-        {/* Dashboard */}
-        {currentPage === "dashboard" && (
-          <Dashboard
-            toggleSidebar={toggleSidebar}
-            sidebarOpen={sidebarOpen}
-            setCurrentPage={setCurrentPage}
-          />
-        )}
-
-        {/* My Account */}
-        {currentPage === "account" && (
-          <Account
-            toggleSidebar={toggleSidebar}
-            sidebarOpen={sidebarOpen}
-            setCurrentPage={setCurrentPage}
-          />
-        )}
-
-      
-{currentPage === "books" && (
-  <BookCollection setCurrentPage={setCurrentPage} />
-)}
-{currentPage === "borrowed" && ( <BorrowedBooks setCurrentPage={setCurrentPage} />
-)}
-{currentPage === "findBook" && ( <FindBook setCurrentPage={setCurrentPage} />
-)}
-
-
-
-        {/* Due Books */}
-        {currentPage === "due" && (<DueBook setCurrentPage={setCurrentPage} />)}
-
-        
-
-        {/* Find Library */}
-        {currentPage === "findLibrary" && (
-  <FindLibrary setCurrentPage={setCurrentPage} />
-)}
-
-        {/* Categories */}
-        {currentPage === "categories" && (
-  <Categories setCurrentPage={setCurrentPage} />
-)}
-
-        {/* Members */}
-        {currentPage === "members" && (<Members setCurrentPage={setCurrentPage} />)}
-
-        {/* Favorite Books */}
-        {currentPage === "favorite" && (<FavoriteBook setCurrentPage={setCurrentPage} />)}
-
-        {/* Settings */}
-        {currentPage === "settings" && (<Setting setCurrentPage={setCurrentPage} />)}
-
+        <div className="page-content">
+          {renderPage()}
+        </div>
       </main>
     </div>
   );

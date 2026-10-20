@@ -65,7 +65,6 @@ function Setting() {
     try {
       localStorage.setItem("myLibrarySettings", JSON.stringify(settings));
 
-      // Keep the profile page in sync with the account settings.
       const savedProfile = JSON.parse(
         localStorage.getItem("myLibraryProfile") || "{}"
       );
@@ -156,8 +155,6 @@ function Setting() {
               </div>
             </div>
           </section>
-
-          {/* Notifications */}
           <section className="settings-card">
             <div className="settings-card-header">
               <div className="settings-icon notification-setting-icon">
@@ -206,8 +203,6 @@ function Setting() {
               </label>
             </div>
           </section>
-
-          {/* Appearance */}
           <section className="settings-card">
             <div className="settings-card-header">
               <div className="settings-icon appearance-setting-icon">
@@ -268,8 +263,6 @@ function Setting() {
               )}
             </div>
           </section>
-
-          {/* Language */}
           <section className="settings-card">
             <div className="settings-card-header">
               <div className="settings-icon language-setting-icon">

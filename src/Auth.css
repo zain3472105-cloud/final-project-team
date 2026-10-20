@@ -9,7 +9,6 @@
   color: #30364d;
 }
 
-/* Hero Header with Modern Library Background */
 .auth-hero {
   position: relative;
   width: 100%;
@@ -29,7 +28,6 @@
   background-repeat: no-repeat;
 }
 
-/* Dark Overlay */
 .auth-overlay {
   position: absolute;
   inset: 0;
@@ -40,7 +38,7 @@
   );
 }
 
-/* Welcome Text */
+
 .auth-welcome {
   position: relative;
   z-index: 1;
@@ -62,7 +60,6 @@
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
-/* Card Position */
 .auth-card-wrapper {
   position: relative;
   z-index: 2;
@@ -74,7 +71,6 @@
   margin-top: -185px;
 }
 
-/* White Card */
 .auth-card {
   width: 100%;
   max-width: 440px;
@@ -84,15 +80,11 @@
   border-radius: 18px;
   box-shadow: 0 15px 45px rgba(36, 28, 75, 0.18);
 }
-
-/* Logo */
 .auth-logo {
   text-align: center;
   font-size: 38px;
   margin-bottom: 10px;
 }
-
-/* Card Heading */
 .auth-card h2 {
   text-align: center;
   margin: 0 0 10px;
@@ -107,8 +99,6 @@
   margin: 0 0 22px;
   line-height: 1.6;
 }
-
-/* Social Buttons */
 .auth-social-buttons {
   display: flex;
   justify-content: center;
@@ -143,8 +133,6 @@
 .auth-social-buttons button:first-child svg {
   fill: #1877f2;
 }
-
-/* Dividers */
 .auth-divider,
 .auth-bottom-divider {
   display: flex;
@@ -172,7 +160,6 @@
   margin: 22px 0;
 }
 
-/* Form */
 .auth-form {
   display: flex;
   flex-direction: column;
@@ -213,8 +200,6 @@
   border-color: #8b5cf6;
   box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
 }
-
-/* Remember Me and Forgot Password */
 .auth-form-options {
   display: flex;
   justify-content: space-between;
@@ -250,8 +235,6 @@
 .auth-forgot:hover {
   text-decoration: underline;
 }
-
-/* Sign In Button */
 .auth-submit {
   width: 100%;
   min-height: 47px;
@@ -271,8 +254,6 @@
   background: linear-gradient(100deg, #be185d, #6d28d9);
   transform: translateY(-1px);
 }
-
-/* Sign Up Button */
 .auth-signup-button {
   width: 100%;
   min-height: 46px;
@@ -291,8 +272,6 @@
   background: #2563eb;
   transform: translateY(-1px);
 }
-
-/* Switch Between Forms */
 .auth-switch-text {
   margin: 20px 0 0;
   text-align: center;
@@ -309,8 +288,6 @@
   font-weight: 700;
   cursor: pointer;
 }
-
-/* Footer */
 .auth-footer {
   display: flex;
   justify-content: center;
@@ -322,8 +299,6 @@
   font-size: 12px;
   text-align: center;
 }
-
-/* Mobile Responsive */
 @media (max-width: 480px) {
   .auth-hero {
     height: 340px;

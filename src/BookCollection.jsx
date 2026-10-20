@@ -4,6 +4,8 @@ import { Search, BookOpen, RefreshCw } from "lucide-react";
 import PageLayout from "./PageLayout";
 import "./BookCollection.css";
 
+const API_URL = "https://openlibrary.org/search.json";
+
 function BookCollection({ setCurrentPage }) {
   const [books, setBooks] = useState([]);
   const [search, setSearch] = useState("");
@@ -12,15 +14,15 @@ function BookCollection({ setCurrentPage }) {
   const [error, setError] = useState("");
   const [visibleCount, setVisibleCount] = useState(10);
 
+  // Fetch books from Open Library
   async function fetchBooks(query = "fiction") {
     setLoading(true);
     setError("");
+    setVisibleCount(10);
 
     try {
       const response = await fetch(
-        `https://openlibrary.org/search.json?q=${encodeURIComponent(
-          query
-        )}&limit=40`
+        `${API_URL}?q=${encodeURIComponent(query)}&limit=40`
       );
 
       if (!response.ok) {
@@ -42,28 +44,34 @@ function BookCollection({ setCurrentPage }) {
       }));
 
       setBooks(formattedBooks);
-    } catch {
+    } catch (err) {
       setError(
         "Books could not be loaded. Please check your internet connection and try again."
       );
+      setBooks([]);
     } finally {
       setLoading(false);
     }
   }
 
+  // Load initial books
   useEffect(() => {
-    fetchBooks();
+    fetchBooks("fiction");
   }, []);
 
+  // Get unique categories
   const categories = [
     "All",
     ...new Set(books.map((book) => book.category)),
   ];
 
+  // Filter books by title, author, and category
   const filteredBooks = books.filter((book) => {
+    const searchText = search.trim().toLowerCase();
+
     const matchesSearch =
-      book.title.toLowerCase().includes(search.toLowerCase()) ||
-      book.author.toLowerCase().includes(search.toLowerCase());
+      book.title.toLowerCase().includes(searchText) ||
+      book.author.toLowerCase().includes(searchText);
 
     const matchesCategory =
       category === "All" || book.category === category;
@@ -71,16 +79,33 @@ function BookCollection({ setCurrentPage }) {
     return matchesSearch && matchesCategory;
   });
 
+  // Search books
   function handleSearch(event) {
     event.preventDefault();
 
     const query = search.trim();
 
-    if (query) {
-      fetchBooks(query);
-    } else {
-      fetchBooks();
-    }
+    setCategory("All");
+    setVisibleCount(10);
+
+    fetchBooks(query || "fiction");
+  }
+
+  // Refresh books
+  function handleRefresh() {
+    setVisibleCount(10);
+    fetchBooks(search.trim() || "fiction");
+  }
+
+  // Change category
+  function handleCategoryChange(event) {
+    setCategory(event.target.value);
+    setVisibleCount(10);
+  }
+
+  // Load more books
+  function handleLoadMore() {
+    setVisibleCount((count) => count + 10);
   }
 
   return (
@@ -91,12 +116,13 @@ function BookCollection({ setCurrentPage }) {
       setCurrentPage={setCurrentPage}
     >
       <div className="book-page">
+        {/* Welcome Section */}
         <section className="book-welcome">
           <div className="book-welcome-icon">
             <BookOpen size={30} />
           </div>
 
-          <div>
+          <div className="book-welcome-text">
             <h2>Discover Your Next Book</h2>
             <p>
               Explore books from different authors and subjects.
@@ -104,25 +130,29 @@ function BookCollection({ setCurrentPage }) {
           </div>
         </section>
 
+        {/* Search and Filter Toolbar */}
         <section className="book-toolbar">
           <form className="book-search" onSubmit={handleSearch}>
-            <Search size={19} />
+            <Search size={19} aria-hidden="true" />
 
             <input
               type="search"
               placeholder="Search by title or author..."
               value={search}
               onChange={(event) => setSearch(event.target.value)}
-              aria-label="Search books"
+              aria-label="Search books by title or author"
             />
 
-            <button type="submit">Search</button>
+            <button type="submit" disabled={loading}>
+              Search
+            </button>
           </form>
 
           <select
+            className="book-category-filter"
             value={category}
-            onChange={(event) => setCategory(event.target.value)}
-            aria-label="Filter by category"
+            onChange={handleCategoryChange}
+            aria-label="Filter books by category"
           >
             {categories.map((item) => (
               <option key={item} value={item}>
@@ -134,19 +164,26 @@ function BookCollection({ setCurrentPage }) {
           <button
             type="button"
             className="book-refresh"
-            onClick={() => fetchBooks(search.trim() || "fiction")}
+            onClick={handleRefresh}
             disabled={loading}
           >
-            <RefreshCw size={17} />
-            Refresh
+            <RefreshCw
+              size={17}
+              className={loading ? "refresh-spinning" : ""}
+              aria-hidden="true"
+            />
+            <span>Refresh</span>
           </button>
         </section>
 
+        {/* Book Collection */}
         <section className="book-section">
           <div className="book-section-heading">
             <div>
               <h2>Book Collection</h2>
-              <p>Find your favorite books and explore new ideas.</p>
+              <p>
+                Find your favorite books and explore new ideas.
+              </p>
             </div>
 
             <span className="book-count">
@@ -154,31 +191,35 @@ function BookCollection({ setCurrentPage }) {
             </span>
           </div>
 
+          {/* Loading State */}
           {loading && (
             <div className="book-message" role="status">
-              Loading books...
+              <RefreshCw size={22} className="refresh-spinning" />
+              <p>Loading books...</p>
             </div>
           )}
 
+          {/* Error State */}
           {!loading && error && (
             <div className="book-message book-error" role="alert">
               <p>{error}</p>
 
-              <button
-                type="button"
-                onClick={() => fetchBooks(search.trim() || "fiction")}
-              >
+              <button type="button" onClick={handleRefresh}>
                 Try Again
               </button>
             </div>
           )}
 
+          {/* Empty State */}
           {!loading && !error && filteredBooks.length === 0 && (
             <div className="book-message">
-              No books found. Try another title or author.
+              <BookOpen size={32} />
+              <h3>No books found</h3>
+              <p>Try another title, author, or category.</p>
             </div>
           )}
 
+          {/* Book Cards */}
           {!loading && !error && filteredBooks.length > 0 && (
             <>
               <div className="book-grid">
@@ -186,7 +227,11 @@ function BookCollection({ setCurrentPage }) {
                   <article className="book-card" key={book.id}>
                     <div className="book-image">
                       {book.image ? (
-                        <img src={book.image} alt={book.title} />
+                        <img
+                          src={book.image}
+                          alt={`Cover of ${book.title}`}
+                          loading="lazy"
+                        />
                       ) : (
                         <div className="book-no-image">
                           <BookOpen size={38} />
@@ -200,7 +245,7 @@ function BookCollection({ setCurrentPage }) {
                         {book.category}
                       </span>
 
-                      <h3>{book.title}</h3>
+                      <h3 className="book-title">{book.title}</h3>
 
                       <p className="book-author">
                         By {book.author}
@@ -214,7 +259,7 @@ function BookCollection({ setCurrentPage }) {
                         className="view-book-btn"
                         href={`https://openlibrary.org${book.id}`}
                         target="_blank"
-                        rel="noreferrer"
+                        rel="noopener noreferrer"
                       >
                         View Book
                       </a>
@@ -223,14 +268,10 @@ function BookCollection({ setCurrentPage }) {
                 ))}
               </div>
 
+              {/* Load More */}
               {visibleCount < filteredBooks.length && (
                 <div className="book-load-more">
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setVisibleCount((count) => count + 10)
-                    }
-                  >
+                  <button type="button" onClick={handleLoadMore}>
                     Load More Books
                   </button>
                 </div>
@@ -239,6 +280,7 @@ function BookCollection({ setCurrentPage }) {
           )}
         </section>
 
+        {/* Books Table */}
         {!loading && !error && filteredBooks.length > 0 && (
           <section className="book-table-section">
             <div className="book-section-heading">
@@ -261,30 +303,36 @@ function BookCollection({ setCurrentPage }) {
                 </thead>
 
                 <tbody>
-                  {filteredBooks.slice(0, visibleCount).map((book) => (
-                    <tr key={book.id}>
-                      <td className="table-book">
-                        {book.image ? (
-                          <img src={book.image} alt="" />
-                        ) : (
-                          <BookOpen size={22} />
-                        )}
+                  {filteredBooks
+                    .slice(0, visibleCount)
+                    .map((book) => (
+                      <tr key={book.id}>
+                        <td className="table-book">
+                          {book.image ? (
+                            <img
+                              src={book.image}
+                              alt=""
+                              loading="lazy"
+                            />
+                          ) : (
+                            <BookOpen size={22} />
+                          )}
 
-                        <span>{book.title}</span>
-                      </td>
+                          <span>{book.title}</span>
+                        </td>
 
-                      <td>{book.category}</td>
-                      <td>{book.author}</td>
+                        <td>{book.category}</td>
+                        <td>{book.author}</td>
 
-                      <td>
-                        <span className="status available">
-                          {book.status}
-                        </span>
-                      </td>
+                        <td>
+                          <span className="status available">
+                            {book.status}
+                          </span>
+                        </td>
 
-                      <td>{book.year}</td>
-                    </tr>
-                  ))}
+                        <td>{book.year}</td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>

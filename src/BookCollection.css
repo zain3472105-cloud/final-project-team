@@ -1,6 +1,4 @@
-/* =========================
-   BOOK PAGE
-========================= */
+
 
 .book-page {
   width: 100%;
@@ -9,11 +7,6 @@
   box-sizing: border-box;
   background: #f5f6fa;
 }
-
-
-/* =========================
-   HEADER
-========================= */
 
 .book-header {
   display: flex;
@@ -33,11 +26,6 @@
   color: #777;
   font-size: 14px;
 }
-
-
-/* =========================
-   HEADER ACTIONS
-========================= */
 
 .book-header-actions {
   display: flex;
@@ -62,11 +50,6 @@
   width: 220px;
 }
 
-
-/* =========================
-   BOOK SECTION
-========================= */
-
 .book-section {
   margin-bottom: 35px;
 }
@@ -76,11 +59,6 @@
   color: #252a3a;
   margin-bottom: 20px;
 }
-
-
-/* =========================
-   BOOK GRID
-========================= */
 
 .book-grid {
   display: grid;
@@ -161,12 +139,6 @@
 .view-book-btn:hover {
   background: #5732a3;
 }
-
-
-/* =========================
-   TABLE SECTION
-========================= */
-
 .book-table-section {
   background: white;
   padding: 25px;
@@ -230,11 +202,6 @@ td {
   border-radius: 5px;
 }
 
-
-/* =========================
-   STATUS
-========================= */
-
 .status {
   padding: 5px 9px;
   border-radius: 5px;
@@ -250,11 +217,6 @@ td {
   background: #fff0f0;
   color: #dc3545;
 }
-
-
-/* =========================
-   RESPONSIVE
-========================= */
 
 @media (max-width: 1100px) {
   .book-grid {
@@ -288,5 +250,173 @@ td {
 
   .book-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+
+.book-page,
+.book-section,
+.book-table-section,
+.book-grid {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.book-page {
+  overflow-x: hidden;
+}
+
+.book-header,
+.book-header-actions,
+.table-controls {
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+.book-header > div,
+.book-header-actions > div {
+  min-width: 0;
+}
+
+.book-search {
+  max-width: 100%;
+  min-width: 0;
+}
+
+.book-search input {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.book-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.book-card {
+  min-width: 0;
+}
+
+.book-title-row {
+  flex-wrap: wrap;
+}
+
+.book-title-row h4 {
+  overflow-wrap: anywhere;
+}
+
+.book-description {
+  overflow-wrap: anywhere;
+}
+
+.table-container {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+table {
+  min-width: 600px;
+}
+@media (max-width: 1100px) {
+  .book-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .book-page {
+    padding: 25px;
+  }
+}
+@media (max-width: 700px) {
+  .book-page {
+    padding: 18px 15px;
+  }
+
+  .book-header {
+    align-items: stretch;
+    gap: 15px;
+    margin-bottom: 24px;
+  }
+
+  .book-header h2 {
+    font-size: 22px;
+  }
+
+  .book-header-actions {
+    gap: 12px;
+    width: 100%;
+  }
+
+  .book-search {
+    width: 100%;
+    padding: 11px 12px;
+  }
+
+  .book-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .book-image {
+    height: 160px;
+  }
+
+  .book-card-content {
+    padding: 12px;
+  }
+
+  .book-title-row {
+    align-items: flex-start;
+    gap: 7px;
+  }
+
+  .book-title-row h4 {
+    font-size: 14px;
+  }
+
+  .book-category {
+    font-size: 10px;
+  }
+
+  .book-table-section {
+    padding: 15px;
+  }
+
+  .table-controls {
+    align-items: stretch;
+    gap: 10px;
+    flex-direction: column;
+  }
+
+  .table-controls select,
+  .table-controls input {
+    width: 100%;
+    min-height: 40px;
+  }
+}
+@media (max-width: 400px) {
+  .book-page {
+    padding: 14px 10px;
+  }
+
+  .book-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .book-image {
+    height: 210px;
+  }
+
+  .book-card-content {
+    padding: 14px;
+  }
+
+  .book-table-section {
+    padding: 12px;
+  }
+
+  .book-header h2 {
+    font-size: 20px;
   }
 }

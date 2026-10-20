@@ -1,8 +1,3 @@
-
-/* =========================
-   PAGE LAYOUT
-========================= */
-
 .page-layout {
   width: 100%;
   min-width: 0;
@@ -13,18 +8,12 @@
   color: #26314d;
   box-sizing: border-box;
 }
-
 .page-layout * {
   box-sizing: border-box;
 }
-
-/* =========================
-   PAGE HEADER
-========================= */
-
 .page-header {
   min-height: 110px;
-  padding: 24px 30px;
+  padding: 24px 30px;    
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -64,10 +53,6 @@
   font-size: 14px;
   line-height: 1.7;
 }
-
-/* =========================
-   HEADER ACTIONS
-========================= */
 
 .page-header-actions {
   display: flex;
@@ -120,10 +105,6 @@
   outline-offset: 3px;
 }
 
-/* =========================
-   PAGE BODY
-========================= */
-
 .page-body {
   flex: 1;
   width: 100%;
@@ -144,10 +125,6 @@
   }
 }
 
-/* =========================
-   PAGE FOOTER
-========================= */
-
 .page-footer {
   padding: 19px 30px;
   text-align: center;
@@ -161,10 +138,6 @@
 .page-footer p {
   margin: 0;
 }
-
-/* =========================
-   TABLET
-========================= */
 
 @media (max-width: 768px) {
   .page-header {
@@ -204,10 +177,6 @@
     padding: 16px 12px;
   }
 }
-
-/* =========================
-   MOBILE
-========================= */
 
 @media (max-width: 480px) {
   .page-header {
@@ -261,10 +230,6 @@
     padding: 14px 10px;
   }
 }
-
-/* =========================
-   REDUCED MOTION
-========================= */
 
 @media (prefers-reduced-motion: reduce) {
   .page-body {

@@ -12,14 +12,12 @@ function Auth({ onLogin }) {
     e.preventDefault();
 
     if (email.trim() && password) {
-      // Demo only: real authentication is not configured yet.
       onLogin();
     }
   };
 
   return (
     <div className="auth-page">
-      {/* Header */}
       <header className="auth-hero">
         <div className="auth-overlay"></div>
 
@@ -28,8 +26,6 @@ function Auth({ onLogin }) {
           <p>Your next favorite book is waiting for you.</p>
         </div>
       </header>
-
-      {/* Login Card */}
       <main className="auth-card-wrapper">
         <section className="auth-card">
           <div className="auth-logo">📚</div>
@@ -43,8 +39,6 @@ function Auth({ onLogin }) {
               ? "Welcome back! Please enter your details."
               : "Join our library community today."}
           </p>
-
-          {/* Social Buttons */}
           <div className="auth-social-buttons">
             <button
               type="button"
@@ -89,8 +83,6 @@ function Auth({ onLogin }) {
           <div className="auth-divider">
             <span>or continue with email</span>
           </div>
-
-          {/* Form */}
           <form onSubmit={handleSubmit} className="auth-form">
             <div className="auth-input-group">
               <label htmlFor="auth-email">Email Address</label>
@@ -173,8 +165,6 @@ function Auth({ onLogin }) {
           </p>
         </section>
       </main>
-
-      {/* Footer */}
       <footer className="auth-footer">
         <span>My Library</span>
         <span>Discover. Read. Grow.</span>
