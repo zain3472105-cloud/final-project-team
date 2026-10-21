@@ -1,4 +1,5 @@
 
+import { BookOpen } from "lucide-react";
 import "./Sidebar.css";
 
 function Sidebar({
@@ -24,62 +25,70 @@ function Sidebar({
   const handlePageChange = (page) => {
     setCurrentPage(page);
 
-    // Close the sidebar on smaller screens after selecting a page.
     if (window.innerWidth <= 768) {
       setSidebarOpen(false);
     }
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
-
-  return (
-    <aside
-      className={`sidebar ${sidebarOpen ? "open" : "closed"}`}
-    >
-      <div className="sidebar-header">
-        <div className="logo">
-          <img
-            src="/book_img.png"
-            alt="Library Logo"
-            className="logo-img"
-          />
-
-          <h3>My Library</h3>
-        </div>
-
-        <button
-          className="close-sidebar"
+ return (
+    <>
+      {sidebarOpen && (
+        <div
+          className="sidebar-overlay"
           onClick={() => setSidebarOpen(false)}
-          aria-label="Close sidebar"
-          type="button"
-        >
-          ×
-        </button>
-      </div>
+          aria-hidden="true"
+        />
+      )}
+      <aside
+        id="library-sidebar"
+        className={`sidebar ${sidebarOpen ? "open" : "closed"}`}
+        aria-label="Library sidebar"
+      >
+<div className="sidebar-header">
+  <div className="logo-container">
+    <div className="logo-icon">
+      <BookOpen size={28} strokeWidth={2.2} />
+    </div>
+    <span className="logo-text">My Library</span>
+  </div>
 
-      <nav>
-        {menuItems.map((item) => (
-          <a
-            key={item.id}
-            href={`#${item.id}`}
-            className={currentPage === item.id ? "active" : ""}
-            aria-current={
-              currentPage === item.id ? "page" : undefined
-            }
-            onClick={(event) => {
-              event.preventDefault();
-              handlePageChange(item.id);
-            }}
-          >
-            <span>{item.icon}</span>
-            <span>{item.label}</span>
-          </a>
-        ))}
-      </nav>
-
-      <div className="help">
-        <b>?</b>
-        <span>Need Help?</span>
-      </div>
-    </aside>
+  <button
+    type="button"
+    className="close-sidebar"
+    onClick={() => setSidebarOpen(false)}
+    aria-label="Close sidebar"
+  >
+  </button>
+</div>
+        <nav aria-label="Main navigation">
+          {menuItems.map((item) => (
+            <a
+              key={item.id}
+              href={`#${item.id}`}
+              className={currentPage === item.id ? "active" : ""}
+              aria-current={
+                currentPage === item.id ? "page" : undefined
+              }
+              onClick={(event) => {
+                event.preventDefault();
+                handlePageChange(item.id);
+              }}
+            >
+              <span>{item.icon}</span>
+              <span>{item.label}</span>
+            </a>
+          ))}
+        </nav>
+        <div className="help">
+          <b>?</b>
+          <span>Need Help?</span>
+        </div>
+      </aside>
+    </>
   );
 }
 

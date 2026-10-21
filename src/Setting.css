@@ -393,7 +393,6 @@
   text-align: right;
 }
 
-/* Dark mode for this page and the document background */
 body.library-dark-mode {
   background: #171b2b;
 }
